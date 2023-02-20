@@ -1,13 +1,9 @@
-# Read in the movies.txt file. Each separate line is a description of a different movie.
-# Your task is to create a function to return which movies a user would watch
-# next if they have watched Planet Hulk with the description “Will he save
-# their world or destroy it? When the Hulk becomes too dangerous for the
-# Earth, the Illuminati trick Hulk into a shuttle and launch him into space to a
-# planet where the Hulk can live in peace. Unfortunately, Hulk land on the
-# planet Sakaar where he is sold into slavery and trained as a gladiator.”
+# Read in the movies.txt file. Each separate line is a description of a different movie. Your task is to create a function to return which movies a user would watch
+# next if they have watched Planet Hulk with the description “Will he save their world or destroy it? When the Hulk becomes too dangerous for the Earth, 
+# the Illuminati trick Hulk into a shuttle and launch him into space to a planet where the Hulk can live in peace. Unfortunately, Hulk land on the planet Sakaar 
+# where he is sold into slavery and trained as a gladiator.”
 
-# The function should take in the description as a parameter and return the
-# title of the most similar movie.
+# The function should take in the description as a parameter and return the title of the most similar movie.
 
 import spacy  
 nlp = spacy.load('en_core_web_md')
@@ -25,31 +21,30 @@ def recommended_movies():
     except:
         print("An error occurred while reading the file.")
 
-    # create a variable to hold the description of Planet Hulk
+# create a variable to hold the description of Planet Hulk
     planet_hulk = nlp("""
     Will he save their world or destroy it? When the Hulk becomes too dangerous for the Earth, 
     the Illuminati trick Hulk into a shuttle and launch him into space to a planet where the Hulk can live in peace. 
     Unfortunately, Hulk land on the planet Sakaar where he is sold into slavery and trained as a gladiator.
     """)
 
-    # create an empty list to hold the most similar movie
+# create an empty list to hold the most similar movie
     most_similar = []
 
-    # loop through the other movie descriptions to compare them to Planet Hulk
+# loop through the other movie descriptions to compare them to Planet Hulk
     for sentence in movie_list:
 
-    # split the senence to isolate the plot description
+# split the senence to isolate the plot description
         split_sentence = sentence.split(" :")
 
-    # compare the 2 plots
+# compare the 2 plots
         similarity = nlp(split_sentence[1]).similarity(planet_hulk)
 
-    # if the most_similar list is empty add this movie
+# if the most_similar list is empty add this movie
         if not most_similar:
             most_similar.extend([split_sentence[0], split_sentence[1], similarity]) 
 
-    # else assess if the movie on the list is more or less similar than this one, and replace it if the movie on the current loop 
-    # is more similar
+# else assess if the movie on the list is more or less similar than this one, and replace it if the movie on the current loop is more similar
         else:
             if most_similar[2] > similarity:
                 continue
@@ -59,7 +54,7 @@ def recommended_movies():
                 del most_similar[:]
                 most_similar.extend([split_sentence[0], split_sentence[1], similarity]) 
 
-    # there's a chance that the list could include more than one movie with the same similarity score, handling eventuality below
+# there's a chance that the list could include more than one movie with the same similarity score, handling eventuality below
     if len(most_similar) == 3:
         print(f"If you liked Planet Hulk, we think you'll like {most_similar[0]}. Here's the plot:\n{most_similar[1]}")
     else:
@@ -69,7 +64,3 @@ def recommended_movies():
             print(f"If you liked Planet Hulk, we think you'll like {movie_name}. Here's the plot:\n{movie_plot}")
 
 recommended_movies()
-
-# Host your solution on a Git host such as GitLab or GitHub.
-# Remember to exclude any venv or virtualenv files from your repo.
-# Add the link for your remote Git repo to your semantic_similarity.txt file.
